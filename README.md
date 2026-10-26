@@ -65,16 +65,16 @@ Claude instalará todo. Algunas veces te pedirá que hagas tú algo: pulsar **In
 
 ## Uso diario: editar un reel
 
-1. **Recorta tus tomas** y déjalas en la carpeta `edicion-enso/tomas/`, con los nombres que explica [tomas/README.md](tomas/README.md) (`1.mp4`, `2.mp4`, `1_b_descripcion.mp4`…).
+1. **Recorta tus tomas** y déjalas en una carpeta con el nombre del reel dentro de `tomas/` (por ejemplo `edicion-enso/tomas/Hombro/`), con los nombres que explica [tomas/README.md](tomas/README.md) (`1.mp4`, `2.mp4`, `1_b_descripcion.mp4`…).
 2. **Abre la Terminal en la carpeta del kit** (`cd` + arrastrar la carpeta `edicion-enso`, como en el paso 3) y escribe `claude`.
 3. **Escribe** `/reel-editor`, seguido de tus comentarios. Por ejemplo:
 
    ```text
-   /reel-editor reel nuevo sobre la movilidad de hombro. La toma 4 tiene que ir con humor, y en la 7 me gustaría un gráfico del rango de movimiento.
+   /reel-editor Hombro. Va sobre la movilidad de hombro. La toma 4 tiene que ir con humor, y en la 7 me gustaría un gráfico del rango de movimiento.
    ```
 
-4. Claude te preguntará el nombre del reel, transcribirá y cortará las tomas y **abrirá un storyboard en el navegador**: una imagen por momento del reel, con el diseño encima. Coméntalo por número de escena hasta que te guste y dile **"aprobado"**.
-5. Claude monta el reel y te da la ruta del MP4 (en `<NombreDelReel>/out/`). Pídele cambios por tiempo ("en 0:12 el título sale tarde") hasta que esté listo.
+4. Claude transcribirá y cortará las tomas y **abrirá un storyboard en el navegador**: una imagen por momento del reel, con el diseño encima. Coméntalo por número de escena hasta que te guste y dile **"aprobado"**.
+5. Claude monta el reel y lo deja en `finales/<NombreDelReel>.mp4`. Pídele cambios por tiempo ("en 0:12 el título sale tarde") hasta que esté listo.
 6. Sube el vídeo a Instagram y añade ahí la música en tendencia: el reel sale sin música a propósito.
 
 ### Consejos
@@ -90,7 +90,9 @@ Claude instalará todo. Algunas veces te pedirá que hagas tú algo: pulsar **In
 
 | Carpeta o archivo | Qué es |
 |---|---|
-| `tomas/` | Bandeja de entrada: aquí van las tomas recortadas del próximo reel |
+| `tomas/` | Tus tomas recortadas, una carpeta por reel (`tomas/Pancake/`, `tomas/Hombro/`…) |
+| `ediciones/` | Lo que genera Claude para cada reel: corte, storyboard, código y borradores |
+| `finales/` | Los reels terminados, listos para subir |
 | `referencias/` | Reels de referencia visual (no se suben a GitHub) |
 | `.claude/skills/reel-editor/` | El skill de edición: flujo (`SKILL.md`), estilo (`STYLE.md`), movimiento (`MOTION.md`), storyboard (`STORYBOARD.md`) y scripts |
 | `.claude/skills/reel-editor/marca/` | Identidad de EnsoMovers para vídeo: reglas (`MARCA.md`), fuentes, logos del ensō y efectos de sonido |
@@ -99,7 +101,7 @@ Claude instalará todo. Algunas veces te pedirá que hagas tú algo: pulsar **In
 | `INSTALAR.md` | Instrucciones de instalación para Claude |
 | `CLAUDE.md` | Reglas generales que Claude lee siempre en esta carpeta |
 
-Cada reel que edites crea su propia carpeta (`Pancake/`, `Hombro/`…) con las tomas, el storyboard y los renders. Esas carpetas se quedan en tu ordenador y no se suben a GitHub.
+Por cada reel hay tres sitios: `tomas/<Reel>/` (lo que grabas tú y nadie toca), `ediciones/<Reel>/` (el trabajo de Claude; se puede borrar sin perder tus tomas) y `finales/<Reel>.mp4` (el resultado). Todo eso se queda en tu ordenador: a GitHub solo sube el kit.
 
 ---
 

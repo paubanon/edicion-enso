@@ -97,5 +97,5 @@ Repasa que todo responde: `ffmpeg`, `node`, `uv`, `mlx_whisper --help`, Satoshi 
 
 Después dile a la persona, en pocas líneas:
 - qué quedó instalado y si algo falló (con la causa en lenguaje llano);
-- cómo empezar: dejar las tomas recortadas en `tomas/` (con los nombres de `tomas/README.md`) y escribir `/reel-editor` seguido de sus comentarios sobre el reel;
+- cómo empezar: dejar las tomas recortadas en `tomas/<NombreDelReel>/` (con los nombres de `tomas/README.md`) y escribir `/reel-editor` seguido de sus comentarios sobre el reel;
 - que cada vez que quiera editar, abra la terminal en esta carpeta y escriba `claude`.

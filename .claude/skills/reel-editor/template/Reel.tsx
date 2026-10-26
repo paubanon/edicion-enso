@@ -1,10 +1,10 @@
 import { AbsoluteFill } from "remotion";
-import { BigTitle } from "../../lib/BigTitle";
-import { Captions } from "../../lib/Captions";
-import type { Span } from "../../lib/edit";
-import { Finish } from "../../lib/Finish";
-import { Footage, type Grade } from "../../lib/Footage";
-import { colors } from "../../lib/theme";
+import { BigTitle } from "../../../lib/BigTitle";
+import { Captions } from "../../../lib/Captions";
+import type { Span } from "../../../lib/edit";
+import { Finish } from "../../../lib/Finish";
+import { Footage, type Grade } from "../../../lib/Footage";
+import { colors } from "../../../lib/theme";
 import { edit } from "./edit";
 
 // Layer stack, bottom to top: graded footage -> titles behind the person -> person

@@ -4,7 +4,7 @@
 # ///
 """Cut the chosen takes into the reel's spoken track and export the edit timeline.
 
-Usage: uv run cut.py <reel-dir>
+Usage: uv run cut.py ediciones/<Reel>   (takes from tomas/<Reel>/, see paths.py)
 
 Reads   <reel>/edit/cut.json          which takes (and source ranges) to keep, in order
         <reel>/edit/words/<take>.json word timings from ingest.py
@@ -39,6 +39,8 @@ from fractions import Fraction
 from pathlib import Path
 
 import numpy as np
+
+from paths import takes_dir
 
 AUDIO_RATE = 48000
 ENERGY_HOP = 0.01
@@ -321,7 +323,7 @@ def main():
     words_by_take = {n: json.loads((reel / "edit" / "words" / f"{Path(n).stem}.json").read_text()) for n in names}
     takes = {}
     for name in names:
-        path = reel / "tomas" / name
+        path = takes_dir(reel) / name
         audio = load_audio(path)
         db = energy_db(audio)
         takes[name] = {"path": path, "audio": audio, "db": db, "speech": with_word_tails(speech_mask(db), words_by_take[name])}

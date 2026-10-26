@@ -1,8 +1,20 @@
 # Tomas
 
-Deja aquí las **tomas ya recortadas** del próximo reel. Cuando empieces la edición, Claude te preguntará el nombre del reel y las moverá a su propia carpeta (`<Reel>/tomas/`), así que esta bandeja queda vacía para el siguiente.
+Aquí van tus **tomas ya recortadas**, en **una carpeta por reel** con el nombre del reel:
 
-## Cómo nombrarlas
+```
+tomas/
+├── Pancake/
+│   ├── 1.mp4
+│   ├── 1_b_espalda_curvada.mp4
+│   └── 2.mp4 …
+└── Hombro/
+    └── …
+```
+
+Claude nunca mueve, renombra ni borra lo que hay aquí: todo lo que genera va a `ediciones/<Reel>/`, y el vídeo terminado a `finales/<Reel>.mp4`. Para editar, abre Claude en la carpeta del kit y escribe `/reel-editor` seguido del nombre del reel (el de su carpeta) y tus comentarios.
+
+## Cómo nombrar las tomas
 
 El número es el orden del guion. Así Claude sabe qué va con qué sin que se lo expliques:
 

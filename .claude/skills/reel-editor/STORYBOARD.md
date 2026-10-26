@@ -1,6 +1,6 @@
 # Storyboard
 
-Página HTML con un fotograma real del corte por beat y el diseño encima, para que el usuario apruebe la idea **antes** de construir nada. La genera `scripts/storyboard.py` a partir de `<Reel>/edit/storyboard.json`.
+Página HTML con un fotograma real del corte por beat y el diseño encima, para que el usuario apruebe la idea **antes** de construir nada. La genera `scripts/storyboard.py` a partir de `ediciones/<Reel>/edit/storyboard.json`.
 
 ## Qué es un beat
 
@@ -54,7 +54,7 @@ Un tramo de 2–5 s con **una sola función**: gancho, problema, ejemplo, giro, 
 ## Proceso
 
 1. Escribe `storyboard.json` completo de una vez.
-2. `python3 scripts/storyboard.py <Reel> --open`. Fotogramas y recortes se cachean en `edit/storyboard/`.
+2. `python3 scripts/storyboard.py ediciones/<Reel> --open`. Fotogramas y recortes se cachean en `edit/storyboard/`.
 3. Al usuario: 3–5 líneas con la idea, el look y los beats en los que más se juega. Espera su aprobación.
 4. En los cambios, edita solo los beats comentados y regenera.
 5. El storyboard aprobado es el contrato de la construcción: si algo cambia al construir, avisa.

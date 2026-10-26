@@ -1,6 +1,6 @@
 """Cut the person out of the reel's footage, for titles that sit behind them.
 
-Usage: python3 cutout.py <reel-dir>    -> <reel>/public/cutout.webm
+Usage: python3 cutout.py ediciones/<Reel>    -> <reel>/public/cutout.webm
 
 The cutout is the footage itself with the background made transparent (VP9 with
 alpha), frame-aligned with public/main_cut.mp4, so a layer stack of

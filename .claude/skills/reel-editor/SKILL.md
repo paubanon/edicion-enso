@@ -15,17 +15,17 @@ Lee también, cuando toque: [marca/MARCA.md](marca/MARCA.md) y [STYLE.md](STYLE.
 <raíz del repo>/             ← directorio de trabajo (repo edicion-enso); aquí se ejecuta todo
   package.json, node_modules Remotion 4 compartido por todos los reels
   lib/                       componentes compartidos: Footage (metraje + capas detrás + reencuadres), BigTitle, Captions, Card + Marker (tarjeta estándar, marcador sage), BrushStroke (trazo a mano), BRoll, Sticker (objeto recortado como pegatina), Sfx (catálogo de efectos), Finish, theme
-  tomas/                     bandeja de entrada: el usuario deja aquí las tomas recortadas del próximo reel
   referencias/               reels de referencia visual que añade el usuario (análisis en STYLE.md)
-  <Reel>/
-    tomas/                   tomas del usuario. Solo lectura: nunca mover, renombrar ni borrar
+  tomas/<Reel>/              tomas recortadas del usuario, una carpeta por reel. Solo lectura: nunca mover, renombrar ni borrar
+  ediciones/<Reel>/          todo lo que generas tú para ese reel
     edit/                    notas.md, transcripción, cut.json, storyboard.json/.html, handoff.md
     public/                  main_cut.mp4, cutout.webm, B-roll, sfx, música, marca → skill/marca (fuentes, logos)
     src/                     index.ts, Root.tsx, Reel.tsx, edit.ts, edit.json, components/
-    out/                     stills, renders y QA
+    out/                     borradores, renders y QA
+  finales/<Reel>.mp4         copia del reel entregado, lista para subir
 ```
 
-`S=.claude/skills/reel-editor/scripts`. `cut.py` se lanza con `uv run` (declara numpy); el resto, con `python3`. La transcripción usa el `mlx_whisper` instalado en el sistema (`uv tool`).
+`S=.claude/skills/reel-editor/scripts` y `R=ediciones/<Reel>`. Los scripts reciben `$R` y encuentran las tomas en `tomas/<Reel>/` por el nombre (`scripts/paths.py`). `cut.py` se lanza con `uv run` (declara numpy); el resto, con `python3`. La transcripción usa el `mlx_whisper` instalado en el sistema (`uv tool`).
 
 ### Nombres de las tomas (convención del usuario)
 
@@ -46,34 +46,33 @@ Lee también, cuando toque: [marca/MARCA.md](marca/MARCA.md) y [STYLE.md](STYLE.
 
 ## Flujo, con dos puertas que requieren aprobación
 
-**0. Preparar el reel** (si `<Reel>/src` no existe). Si las tomas están en la bandeja `tomas/` de la raíz, pregunta el nombre del reel (una palabra, p. ej. `Pancake`) y muévelas a `<Reel>/tomas/`, dejando el `README.md` de la bandeja en su sitio:
+**0. Preparar el reel** (si `$R/src` no existe). El reel se llama como su carpeta de tomas (`tomas/Pancake/` → `Pancake`). Si el usuario no dice cuál, mira qué carpeta de `tomas/` aún no tiene `ediciones/` y confírmalo. Si dejó tomas sueltas en `tomas/`, pídele que las meta en una carpeta con el nombre del reel.
 ```bash
-mkdir -p <Reel>/{tomas,edit,public,src,out} && ln -sfn ../../.claude/skills/reel-editor/marca <Reel>/public/marca
-find tomas -maxdepth 1 -type f ! -name README.md ! -name '.*' -exec mv {} <Reel>/tomas/ \;
-cp .claude/skills/reel-editor/template/* <Reel>/src/
+mkdir -p $R/{edit,public,src,out} && ln -sfn ../../../.claude/skills/reel-editor/marca $R/public/marca
+cp .claude/skills/reel-editor/template/* $R/src/
 ```
 Si hay referencias nuevas en `referencias/` que no estén analizadas en STYLE.md, analízalas primero (hoja de contacto de cada una) y propón qué tomar de ellas.
 
-**1. Ingesta.** `python3 $S/ingest.py <Reel> --vocab "EnsoMovers, …"` (añade términos del tema; ~1/4 de la duración, lánzalo en segundo plano). Lee `edit/clips.md`, `edit/transcript.md`, `edit/overview.jpg` y los comentarios del usuario (`edit/notas.md` o el chat).
+**1. Ingesta.** `python3 $S/ingest.py $R --vocab "EnsoMovers, …"` (añade términos del tema; ~1/4 de la duración, lánzalo en segundo plano). Lee `edit/clips.md`, `edit/transcript.md`, `edit/overview.jpg` y los comentarios del usuario (`edit/notas.md` o el chat).
 
-**2. Corte.** Escribe `edit/cut.json` (formato en el docstring de `cut.py`): las tomas y rangos en orden, la mejor toma de cada frase, sin repeticiones. `uv run $S/cut.py <Reel>`. Si avisa de palabras cortadas, ajusta los rangos y repite. Una palabra de Whisper de más de ~0,7 s suele esconder una repetición o un ruido (respiración, roce al moverse): compruébalo con la energía de la toma y sácalo partiendo el rango. Lee `edit/cut_transcript.md`: es tu mapa de fotogramas para todo lo demás.
+**2. Corte.** Escribe `edit/cut.json` (formato en el docstring de `cut.py`): las tomas y rangos en orden, la mejor toma de cada frase, sin repeticiones. `uv run $S/cut.py $R`. Si avisa de palabras cortadas, ajusta los rangos y repite. Una palabra de Whisper de más de ~0,7 s suele esconder una repetición o un ruido (respiración, roce al moverse): compruébalo con la energía de la toma y sácalo partiendo el rango. Lee `edit/cut_transcript.md`: es tu mapa de fotogramas para todo lo demás.
 
-**3. Storyboard → PUERTA 1.** Lee STYLE.md y STORYBOARD.md. Escribe `edit/storyboard.json` y `python3 $S/storyboard.py <Reel> --open`. Resume al usuario en pocas líneas la idea, el look y los momentos clave. No construyas nada hasta que lo apruebe. En las iteraciones cambia solo los beats que comente.
+**3. Storyboard → PUERTA 1.** Lee STYLE.md y STORYBOARD.md. Escribe `edit/storyboard.json` y `python3 $S/storyboard.py $R --open`. Resume al usuario en pocas líneas la idea, el look y los momentos clave. No construyas nada hasta que lo apruebe. En las iteraciones cambia solo los beats que comente.
 
-**4. Recorte de persona.** Si algún beat tiene título detrás: `python3 $S/cutout.py <Reel>` (unos 2–3 min por minuto de vídeo; lánzalo en segundo plano y sigue construyendo).
+**4. Recorte de persona.** Si algún beat tiene título detrás: `python3 $S/cutout.py $R` (unos 2–3 min por minuto de vídeo; lánzalo en segundo plano y sigue construyendo).
 
 **5. Construcción.** `src/Reel.tsx` con la pila de capas de STYLE.md y los componentes de `lib/`. Lo que sea propio del reel va en `src/components/`. Para traer un objeto del B-roll al plano del que habla: `scripts/object_cutout.swift` (uso en su cabecera; compílalo con `swiftc -O` en `scripts/.build/`) → PNG en `public/objetos/` → `lib/Sticker`. Si algo es claramente reutilizable, llévalo a `lib/`. Fotogramas desde `cut_transcript.md`. `npm run typecheck`.
 
-**6. Verificación.** Borrador a media escala y hoja de fotogramas clave; arregla. Después render completo (~9 min para 90 s), `python3 $S/qa.py <Reel>/out/<reel>.mp4 --at <t1>,<t2>,…` y mira la hoja de contacto. Comprueba: cara nunca tapada, texto dentro de la zona segura, nada cortado, títulos legibles al menos 1,2 s, el gancho se entiende en silencio. Arregla antes de enseñar.
+**6. Verificación.** Borrador a media escala y hoja de fotogramas clave; arregla. Después render completo (~9 min para 90 s), `python3 $S/qa.py $R/out/<reel>.mp4 --at <t1>,<t2>,…` y mira la hoja de contacto. Comprueba: cara nunca tapada, texto dentro de la zona segura, nada cortado, títulos legibles al menos 1,2 s, el gancho se entiende en silencio. Arregla antes de enseñar.
 
-**7. Revisión → PUERTA 2.** Entrega la ruta del MP4. El usuario comenta por tiempo ("en 0:12…"). Retoca y re-renderiza. **Cada corrección de estilo que valga para futuros reels se añade a la sección "Aprendido" de STYLE.md, con el porqué.**
+**7. Revisión → PUERTA 2.** Copia el render a `finales/<Reel>.mp4` (sobrescribe la versión anterior) y entrega esa ruta. El usuario comenta por tiempo ("en 0:12…"). Retoca y re-renderiza. **Cada corrección de estilo que valga para futuros reels se añade a la sección "Aprendido" de STYLE.md, con el porqué.**
 
 ## Comandos de Remotion (desde la raíz del repo)
 
 ```bash
-npx remotion studio <Reel>/src/index.ts --public-dir=<Reel>/public
-npx remotion still <Reel>/src/index.ts Reel <Reel>/out/f<N>.jpg --frame=<N> --scale=0.5 --public-dir=<Reel>/public
-npx remotion render <Reel>/src/index.ts Reel <Reel>/out/<reel>.mp4 --public-dir=<Reel>/public
+npx remotion studio $R/src/index.ts --public-dir=$R/public
+npx remotion still $R/src/index.ts Reel $R/out/f<N>.jpg --frame=<N> --scale=0.3 --public-dir=$R/public
+npx remotion render $R/src/index.ts Reel $R/out/<reel>.mp4 --public-dir=$R/public
 ```
 
 ## Audio

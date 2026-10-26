@@ -1,5 +1,5 @@
-# Allowlist: only the editing kit is versioned. Reel folders (Pancake/, …), takes,
-# references, renders and local brand material stay on each computer.
+# Allowlist: only the editing kit is versioned. Takes, edits, finished reels,
+# references and local brand material stay on each computer.
 /*
 !/.claude/
 !/.gitignore
@@ -13,10 +13,17 @@
 !/remotion.config.ts
 !/tsconfig.json
 !/tomas/
+!/ediciones/
+!/finales/
 !/referencias/
 
+# Takes, edits, finished reels and references stay local: only each folder's README is versioned.
 /tomas/*
 !/tomas/README.md
+/ediciones/*
+!/ediciones/README.md
+/finales/*
+!/finales/README.md
 /referencias/*
 !/referencias/README.md
 

@@ -2,7 +2,7 @@
 //
 // Usage: object_cutout <frame.png> <out.png> <x,y,w,h>
 // Extract the frame with ffmpeg first (it applies the take's rotation):
-//   ffmpeg -ss 3.2 -i tomas/8_b_bloque_yoga.mp4 -frames:v 1 frame.png
+//   ffmpeg -ss 3.2 -i tomas/<Reel>/8_b_bloque_yoga.mp4 -frames:v 1 frame.png
 // x,y,w,h is a box around the object, in fractions of the frame from the top left:
 // over the whole frame Vision only sees the person, but inside the box the object is
 // the foreground. Apple Vision finds the foreground instances (macOS 14+); instances

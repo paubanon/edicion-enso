@@ -1,10 +1,10 @@
 """Probe, preview and transcribe the raw takes of a reel.
 
-Usage: python3 ingest.py <reel-dir> [--vocab "EnsoMovers, pancake, ..."] [--force]
+Usage: python3 ingest.py ediciones/<Reel> [--vocab "EnsoMovers, pancake, ..."] [--force]
 
 Transcription uses the `mlx_whisper` command (installed with `uv tool install mlx-whisper`).
 
-Reads   <reel>/tomas/*.(mp4|mov)
+Reads   tomas/<Reel>/*.(mp4|mov)   (see paths.py)
 Writes  <reel>/edit/clips.md        one row per take: role, duration, fps, size, note
         <reel>/edit/overview.jpg    one thumbnail per take, in clips.md order
         <reel>/edit/words/<take>.json   word timings (source seconds)
@@ -24,13 +24,14 @@ import tempfile
 from fractions import Fraction
 from pathlib import Path
 
+from paths import takes_dir as find_takes_dir
+
 MODEL = "mlx-community/whisper-large-v3-turbo"
 LANGUAGE = "es"
 VIDEO_SUFFIXES = {".mp4", ".mov"}
 THUMB_WIDTH = 180
 THUMB_HEIGHT = 320
 SHEET_COLUMNS = 8
-TAKES_DIR = "tomas"
 TAKE_NAME = re.compile(r"^(?P<line>\d+(?:\.\d+)?)(?:_(?P<broll>[a-z])_(?P<desc>.+)|_(?P<note>.+))?$")
 # Whisper's word boundaries drift; a gap this long starts a new transcript line.
 LINE_BREAK_GAP = 0.6
@@ -132,7 +133,7 @@ def main():
     parser.add_argument("--force", action="store_true", help="re-transcribe takes that already have words")
     args = parser.parse_args()
 
-    takes_dir = args.reel / TAKES_DIR
+    takes_dir = find_takes_dir(args.reel)
     edit = args.reel / "edit"
     words_dir = edit / "words"
     words_dir.mkdir(parents=True, exist_ok=True)

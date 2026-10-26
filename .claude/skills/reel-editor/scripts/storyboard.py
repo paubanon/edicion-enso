@@ -1,6 +1,6 @@
 """Build the storyboard page for a reel: one real frame per beat with its design on top.
 
-Usage: python3 storyboard.py <reel-dir> [--open]
+Usage: python3 storyboard.py ediciones/<Reel> [--open]
 
 Reads   <reel>/edit/storyboard.json   beats, written by Claude (format in STORYBOARD.md)
         <reel>/public/main_cut.mp4    the cut, from cut.py

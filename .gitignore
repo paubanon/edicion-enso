@@ -1,0 +1,31 @@
+# Allowlist: only the editing kit is versioned. Reel folders (Pancake/, …), takes,
+# references, renders and local brand material stay on each computer.
+/*
+!/.claude/
+!/.gitignore
+!/CLAUDE.md
+!/README.md
+!/INSTALAR.md
+!/docs/
+!/lib/
+!/package.json
+!/package-lock.json
+!/remotion.config.ts
+!/tsconfig.json
+!/tomas/
+!/referencias/
+
+/tomas/*
+!/tomas/README.md
+/referencias/*
+!/referencias/README.md
+
+# Satoshi's licence (Fontshare EULA) forbids redistributing it: INSTALAR.md downloads it.
+/.claude/skills/reel-editor/marca/fuentes/Satoshi-Variable.ttf
+/.claude/skills/reel-editor/marca/fuentes/Satoshi-VariableItalic.ttf
+
+# Build output and local settings.
+/.claude/skills/reel-editor/scripts/.build/
+/.claude/settings.local.json
+__pycache__/
+.DS_Store
